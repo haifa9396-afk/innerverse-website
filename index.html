@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Innerverse — Know Yourself Deeply</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green-deep: #0a1a0a;
+    --green-dark: #111f11;
+    --green-mid: #1a2e1a;
+    --green-accent: #2d4a2d;
+    --green-light: #3d6b3d;
+    --gold: #c9a96e;
+    --gold-light: #e8c99a;
+    --cream: #f5f0e8;
+    --cream-dim: #d4cfc7;
+    --white: #ffffff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--green-deep);
+    color: var(--cream);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(10,26,10,0.95), transparent);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--cream-dim);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 40%, rgba(45,74,45,0.3) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(29,52,29,0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 40% at 80% 20%, rgba(29,52,29,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    opacity: 0.8;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream-dim);
+    margin-bottom: 56px;
+    max-width: 560px;
+    line-height: 1.6;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    padding: 16px 48px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateX(-100%);
+    transition: transform 0.4s;
+    z-index: -1;
+  }
+
+  .hero-cta:hover { color: var(--green-deep); }
+  .hero-cta:hover::before { transform: translateX(0); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.4;
+  }
+
+  .hero-scroll span {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 48px;
+    opacity: 0.5;
+  }
+
+  /* SECTION BASE */
+  section {
+    padding: 120px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 24px;
+    opacity: 0.7;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 300;
+    text-align: center;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .section-body {
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--cream-dim);
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 64px;
+  }
+
+  /* FEATURES GRID */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2px;
+    background: var(--green-accent);
+    border: 1px solid rgba(201,169,110,0.15);
+  }
+
+  .feature {
+    background: var(--green-dark);
+    padding: 48px 40px;
+    transition: background 0.3s;
+  }
+
+  .feature:hover { background: var(--green-mid); }
+
+  .feature-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .feature h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--gold-light);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .feature p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--cream-dim);
+    opacity: 0.8;
+  }
+
+  /* LAYERS */
+  .layers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+
+  @media (max-width: 640px) { .layers { grid-template-columns: 1fr; } }
+
+  .layer {
+    border: 1px solid rgba(201,169,110,0.2);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .layer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  .layer-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--green-accent);
+    position: absolute;
+    top: 16px; right: 24px;
+    line-height: 1;
+  }
+
+  .layer h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--gold);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 13px;
+  }
+
+  .layer p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--cream-dim);
+  }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 64px;
+  }
+
+  .pricing-card {
+    border: 1px solid rgba(201,169,110,0.2);
+    padding: 48px 40px;
+    text-align: center;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+
+  .pricing-card:hover { border-color: rgba(201,169,110,0.5); }
+
+  .pricing-card.featured {
+    border-color: var(--gold);
+    background: rgba(201,169,110,0.04);
+  }
+
+  .pricing-badge {
+    position: absolute;
+    top: -1px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--green-deep);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .pricing-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .pricing-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .pricing-price sup {
+    font-size: 24px;
+    vertical-align: super;
+    color: var(--cream-dim);
+  }
+
+  .pricing-period {
+    font-size: 11px;
+    color: var(--cream-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0.6;
+  }
+
+  .pricing-features {
+    list-style: none;
+    margin-bottom: 40px;
+    text-align: left;
+  }
+
+  .pricing-features li {
+    font-size: 13px;
+    color: var(--cream-dim);
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pricing-features li::before {
+    content: '—';
+    color: var(--gold);
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  .pricing-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .pricing-btn:hover, .pricing-card.featured .pricing-btn {
+    background: var(--gold);
+    color: var(--green-deep);
+  }
+
+  /* QUOTE */
+  .quote-section {
+    padding: 100px 24px;
+    text-align: center;
+    background: linear-gradient(to bottom, transparent, rgba(45,74,45,0.1), transparent);
+  }
+
+  .quote-section blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream);
+    max-width: 800px;
+    margin: 0 auto 24px;
+    line-height: 1.3;
+  }
+
+  .quote-section cite {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.6;
+    font-style: normal;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(201,169,110,0.1);
+    padding: 60px 48px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-links a {
+    color: var(--cream-dim);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+
+  .footer-links a:hover { opacity: 1; }
+
+  .footer-copy {
+    font-size: 11px;
+    color: var(--cream-dim);
+    opacity: 0.3;
+    letter-spacing: 1px;
+  }
+
+  /* POLICY PAGES */
+  .policy-page {
+    display: none;
+    padding: 140px 24px 100px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .policy-page.active { display: block; }
+
+  .policy-page h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+
+  .policy-page .updated {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    opacity: 0.6;
+  }
+
+  .policy-page h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--gold-light);
+    margin: 40px 0 16px;
+    letter-spacing: 0.5px;
+  }
+
+  .policy-page p, .policy-page li {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--cream-dim);
+    opacity: 0.8;
+    margin-bottom: 12px;
+  }
+
+  .policy-page ul { padding-left: 20px; }
+
+  .main-site { display: block; }
+
+  /* MOBILE NAV */
+  @media (max-width: 640px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    footer { padding: 40px 24px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo" onclick="showMain()">Innerverse</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#layers">The System</a></li>
+    <li><a href="#pricing">Access</a></li>
+    <li><a href="#" onclick="showPolicy('privacy')">Privacy</a></li>
+    <li><a href="#" onclick="showPolicy('terms')">Terms</a></li>
+  </ul>
+</nav>
+
+<!-- MAIN SITE -->
+<div class="main-site" id="main-site">
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">The Self-Discovery Platform</p>
+    <h1>You know yourself.<br/><em>But do you understand yourself?</em></h1>
+    <p class="hero-sub">The first platform that weaves your MBTI, Enneagram, wound type, and zodiac into a single living portrait — and stays with you.</p>
+    <a href="#pricing" class="hero-cta">Enter Innerverse</a>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Descend</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">Why Innerverse Exists</p>
+    <h2 class="section-title">Every tool gives you a label.<br/><em>None of them stay.</em></h2>
+    <p class="section-body">You take the quiz. You get your four letters. You screenshot it, maybe share it — and then you're alone with it. No context. No depth. No mirror to return to. Innerverse was built for the gap between knowing your type and actually understanding yourself.</p>
+    <div class="divider"></div>
+
+    <div class="features">
+      <div class="feature">
+        <span class="feature-icon">🌿</span>
+        <h3>One Unified Profile</h3>
+        <p>Your MBTI, Enneagram, wound type, and zodiac aren't separate things. They're a single conversation about who you are. Innerverse reads them together.</p>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">🪞</span>
+        <h3>An AI That Knows You</h3>
+        <p>Not a generic chatbot. An intelligence that holds your full profile and reflects you back to yourself — available at 2am when nothing else is.</p>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">✦</span>
+        <h3>A Space to Return To</h3>
+        <p>Daily mirror questions. Depth streaks. Weekly insights. Innerverse isn't a quiz you take once. It's a relationship you build with yourself over time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAYERS -->
+  <section id="layers">
+    <p class="section-label">The System</p>
+    <h2 class="section-title">Four layers.<br/><em>One true portrait.</em></h2>
+    <p class="section-body">Most people know one layer of themselves. Innerverse maps all four — and finds where they intersect.</p>
+
+    <div class="layers">
+      <div class="layer">
+        <span class="layer-num">01</span>
+        <h3>MBTI</h3>
+        <p>How you think, process, and move through the world. Your cognitive architecture.</p>
+      </div>
+      <div class="layer">
+        <span class="layer-num">02</span>
+        <h3>Enneagram</h3>
+        <p>The core motivation beneath your behavior. The fear that drives you and the desire that guides you.</p>
+      </div>
+      <div class="layer">
+        <span class="layer-num">03</span>
+        <h3>Wound Type</h3>
+        <p>The wound you carry and the pattern it created. The missing piece most platforms never touch.</p>
+      </div>
+      <div class="layer">
+        <span class="layer-num">04</span>
+        <h3>Zodiac</h3>
+        <p>The elemental layer. The rhythm of your energy across time, seasons, and cycles.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <div class="quote-section">
+    <blockquote>"Until you make the unconscious conscious, it will direct your life and you will call it fate."</blockquote>
+    <cite>— Carl Jung</cite>
+  </div>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <p class="section-label">Access</p>
+    <h2 class="section-title">Choose your<br/><em>depth of entry.</em></h2>
+    <p class="section-body">Begin for free. Go deeper when you're ready.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <p class="pricing-name">Explorer</p>
+        <div class="pricing-price"><sup>$</sup>0</div>
+        <p class="pricing-period">Forever free</p>
+        <ul class="pricing-features">
+          <li>Full personality quiz</li>
+          <li>Your core profile</li>
+          <li>3 reflection sessions</li>
+          <li>Basic AI companion</li>
+        </ul>
+        <a href="#" class="pricing-btn">Begin Free</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Most Chosen</div>
+        <p class="pricing-name">Innerverse</p>
+        <div class="pricing-price"><sup>$</sup>9</div>
+        <p class="pricing-period">Per month</p>
+        <ul class="pricing-features">
+          <li>Unlimited reflection sessions</li>
+          <li>Full wound type mapping</li>
+          <li>AI that holds your full profile</li>
+          <li>Daily mirror questions</li>
+          <li>Depth streak & weekly insights</li>
+          <li>Shareable profile card</li>
+        </ul>
+        <a href="#" class="pricing-btn">Subscribe Now</a>
+      </div>
+
+      <div class="pricing-card">
+        <p class="pricing-name">Founder Access</p>
+        <div class="pricing-price"><sup>$</sup>49</div>
+        <p class="pricing-period">One time, lifetime</p>
+        <ul class="pricing-features">
+          <li>Everything in Innerverse</li>
+          <li>Lifetime access, no renewals</li>
+          <li>Early access to all future features</li>
+          <li>Founder recognition</li>
+        </ul>
+        <a href="#" class="pricing-btn">Claim Lifetime Access</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+<!-- END MAIN SITE -->
+
+<!-- PRIVACY POLICY PAGE -->
+<div class="policy-page" id="privacy-page">
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: June 2025</p>
+
+  <p>Innerverse ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use the Innerverse mobile application.</p>
+
+  <h2>Information We Collect</h2>
+  <p>We collect information you provide directly, including:</p>
+  <ul>
+    <li>Account information (email address, name)</li>
+    <li>Personality quiz responses and results</li>
+    <li>Journal entries and reflection session content</li>
+    <li>In-app purchase history via RevenueCat</li>
+  </ul>
+
+  <h2>How We Use Your Information</h2>
+  <p>We use the information we collect to:</p>
+  <ul>
+    <li>Provide, maintain, and improve the Innerverse app</li>
+    <li>Generate your personalised personality profile</li>
+    <li>Power the AI reflection companion using your profile context</li>
+    <li>Process payments and manage subscriptions</li>
+    <li>Send you app notifications if you have opted in</li>
+  </ul>
+
+  <h2>AI & Data Processing</h2>
+  <p>Innerverse uses Anthropic's Claude AI to power the reflection companion. Your journal entries and profile data are processed through a secure server-side proxy — your data is never sent directly to third-party AI providers from your device. Anthropic's data handling is governed by their own privacy policy.</p>
+
+  <h2>Data Storage</h2>
+  <p>Your data is stored securely using Supabase infrastructure with industry-standard encryption. Journal entries and profile data are stored in your personal account and are not shared with other users.</p>
+
+  <h2>Third-Party Services</h2>
+  <p>We use the following third-party services:</p>
+  <ul>
+    <li><strong>Supabase</strong> — database and authentication</li>
+    <li><strong>RevenueCat</strong> — subscription and payment management</li>
+    <li><strong>Anthropic</strong> — AI language model (server-side only)</li>
+    <li><strong>Expo / EAS</strong> — app delivery infrastructure</li>
+  </ul>
+
+  <h2>Your Rights</h2>
+  <p>You have the right to access, correct, or delete your personal data at any time. To request data deletion, contact us at the email below. Account deletion removes all associated data from our servers within 30 days.</p>
+
+  <h2>Children's Privacy</h2>
+  <p>Innerverse is not intended for users under the age of 13. We do not knowingly collect personal information from children under 13.</p>
+
+  <h2>Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. We will notify you of any changes by updating the date at the top of this page.</p>
+
+  <h2>Contact Us</h2>
+  <p>If you have questions about this Privacy Policy, please contact us at: <strong>hello@myinnerverse.world</strong></p>
+</div>
+
+<!-- TERMS OF SERVICE PAGE -->
+<div class="policy-page" id="terms-page">
+  <h1>Terms of Service</h1>
+  <p class="updated">Last updated: June 2025</p>
+
+  <p>By downloading or using Innerverse, you agree to be bound by these Terms of Service. Please read them carefully.</p>
+
+  <h2>Use of the App</h2>
+  <p>Innerverse grants you a limited, non-exclusive, non-transferable licence to use the app for your personal, non-commercial purposes. You agree not to misuse the app or help anyone else do so.</p>
+
+  <h2>Accounts</h2>
+  <p>You are responsible for maintaining the confidentiality of your account credentials. You are responsible for all activity that occurs under your account.</p>
+
+  <h2>Subscriptions & Payments</h2>
+  <ul>
+    <li>Innerverse offers a free tier with limited sessions and a paid subscription at $9/month</li>
+    <li>A lifetime Founder Access option is available as a one-time purchase of $49</li>
+    <li>Subscriptions are managed through Google Play and RevenueCat</li>
+    <li>Cancellations take effect at the end of the current billing period</li>
+    <li>Refunds are subject to Google Play's refund policy</li>
+  </ul>
+
+  <h2>User Content</h2>
+  <p>Your journal entries and reflection content belong to you. You grant Innerverse a limited licence to process this content solely to provide the app's features. We do not use your personal journal content for training AI models.</p>
+
+  <h2>AI Companion</h2>
+  <p>The Innerverse AI companion is designed to support self-reflection and personal insight. It is not a substitute for professional mental health support, therapy, or medical advice. If you are experiencing a mental health crisis, please contact a qualified professional.</p>
+
+  <h2>Intellectual Property</h2>
+  <p>All content, design, and technology within Innerverse — including the personality framework, UI, and brand — is owned by Innerverse and protected by applicable intellectual property laws.</p>
+
+  <h2>Disclaimer</h2>
+  <p>Innerverse is provided "as is" without warranties of any kind. Personality insights are for self-reflection purposes only and are not clinical diagnoses.</p>
+
+  <h2>Limitation of Liability</h2>
+  <p>To the fullest extent permitted by law, Innerverse shall not be liable for any indirect, incidental, or consequential damages arising from your use of the app.</p>
+
+  <h2>Changes to Terms</h2>
+  <p>We reserve the right to modify these terms at any time. Continued use of the app after changes constitutes acceptance of the new terms.</p>
+
+  <h2>Contact</h2>
+  <p>For any questions regarding these Terms, contact us at: <strong>hello@myinnerverse.world</strong></p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-logo">Innerverse</p>
+  <ul class="footer-links">
+    <li><a href="#" onclick="showMain()">Home</a></li>
+    <li><a href="#about" onclick="showMain()">About</a></li>
+    <li><a href="#pricing" onclick="showMain()">Access</a></li>
+    <li><a href="#" onclick="showPolicy('privacy')">Privacy Policy</a></li>
+    <li><a href="#" onclick="showPolicy('terms')">Terms of Service</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 Innerverse. All rights reserved.</p>
+</footer>
+
+<script>
+  function showPolicy(type) {
+    document.getElementById('main-site').style.display = 'none';
+    document.getElementById('privacy-page').classList.remove('active');
+    document.getElementById('terms-page').classList.remove('active');
+    if (type === 'privacy') {
+      document.getElementById('privacy-page').classList.add('active');
+    } else {
+      document.getElementById('terms-page').classList.add('active');
+    }
+    window.scrollTo(0, 0);
+  }
+
+  function showMain() {
+    document.getElementById('main-site').style.display = 'block';
+    document.getElementById('privacy-page').classList.remove('active');
+    document.getElementById('terms-page').classList.remove('active');
+  }
+</script>
+
+</body>
+</html>
