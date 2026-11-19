@@ -1,586 +1,350 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <script>try{if(!matchMedia('(hover:hover) and (pointer:fine) and (min-width:900px)').matches)location.replace('./'+location.search+location.hash)}catch(e){}</script>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Innerverse — Your Inner World</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Innerverse · Self-discovery, journaling and reflection</title>
+<meta name="description" content="Innerverse brings your personality type, Enneagram, zodiac and journal into one private app, with a reflection guide that reads your whole profile. Free to start on Android. iPhone coming soon.">
+<meta property="og:title" content="Innerverse">
+<meta property="og:description" content="Know yourself beyond the label. Free to start on Android.">
+<meta property="og:image" content="img/screen-universe.jpg">
+<meta name="theme-color" content="#0b190e">
+<link rel="icon" href="img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600&family=Gelasio:ital,wght@0,500;0,600;1,500&display=swap">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: #09130a;
-  color: #ede8d4;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+:root{
+  --green:#0b190e; --green-2:#13261a; --green-line:rgba(237,232,212,.12);
+  --cream:#f4efe2; --cream-2:#ebe4d2; --ink:#16241a; --ink-soft:#4c5a4f;
+  --on-dark:#ede8d4; --on-dark-soft:rgba(237,232,212,.72);
+  --gold:#c9a84c; --gold-ink:#8a6d1f;
+  --serif:'Gelasio',Georgia,'Times New Roman',serif;
+  --sans:'Epilogue','Helvetica Neue',Arial,sans-serif;
+  --wrap:1120px;
 }
-img { display: block; max-width: 100%; }
-a { color: inherit; text-decoration: none; }
-
-@keyframes ivDot  { from { opacity:0; transform:scale(0.2); } to { opacity:1; transform:scale(1); } }
-@keyframes ivUp   { from { opacity:0; transform:translateY(36px); } to { opacity:1; transform:translateY(0); } }
-@keyframes ivFloat{ 0%,100% { transform:translateY(0); } 50% { transform:translateY(-9px); } }
-@keyframes ivPulse{ 0%,100% { opacity:0.35; } 50% { opacity:0.9; } }
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--cream);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;margin:0}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 40px}
+.eyebrow{font:600 13px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--gold-ink);margin-bottom:16px}
+.dark .eyebrow{color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
 
 /* Nav */
-#iv-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 22px clamp(24px,5vw,64px);
-  display: flex; align-items: center; justify-content: space-between;
-  transition: background 0.5s, border-bottom 0.5s;
-}
-#iv-nav-logo {
-  display: flex; align-items: center; gap: 9px;
-  font-family: 'Cormorant Garamond'; font-weight: 400; font-size: 21px;
-  letter-spacing: 0.03em; color: #ede8d4;
-}
-#iv-nav-logo span {
-  width: 7px; height: 7px; border-radius: 50%; background: #c9a84c;
-  flex-shrink: 0; box-shadow: 0 0 10px rgba(201,168,76,0.5);
-}
-.iv-nav-links { display: flex; align-items: center; gap: 32px; }
-.iv-nav-link {
-  font-family: 'Jost'; font-weight: 300; font-size: 11px;
-  letter-spacing: 0.2em; text-transform: uppercase; color: rgba(237,232,212,0.55);
-}
-.iv-nav-btn {
-  font-family: 'Jost'; font-weight: 300; font-size: 11px;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  padding: 11px 26px; border: 1px solid rgba(201,168,76,0.4); color: #c9a84c;
-}
+.nav{position:sticky;top:0;z-index:20;background:rgba(11,25,14,.96);backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--green-line)}
+.nav .wrap{display:flex;align-items:center;height:68px;gap:40px}
+.nav-logo img{height:26px;width:auto}
+.nav-links{display:flex;gap:28px;margin-left:auto}
+.nav-links a{color:var(--on-dark-soft);text-decoration:none;font-size:15px}
+.nav-links a:hover{color:var(--on-dark)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:44px;padding:0 20px;border-radius:10px;font:500 15px/1 var(--sans);text-decoration:none;cursor:pointer;border:1px solid transparent;transition:background .15s ease,border-color .15s ease}
+.btn-gold{background:var(--gold);color:#14200f}
+.btn-gold:hover{background:#d6b65a}
 
 /* Hero */
-.iv-hero {
-  min-height: 100vh; position: relative;
-  display: flex; align-items: center; justify-content: center; overflow: hidden;
-}
-.iv-hero-bg {
-  position: absolute; inset: 0;
-  background-image: url('img/hero-bg.jpg');
-  background-size: cover; background-position: center 25%;
-}
-.iv-hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to bottom, rgba(9,19,10,0.45) 0%, rgba(9,19,10,0.2) 40%, rgba(9,19,10,0.85) 100%);
-}
-.iv-hero-content {
-  position: relative; z-index: 2; text-align: center;
-  padding: 0 clamp(24px,6vw,80px);
-}
-.iv-hero-dot {
-  animation: ivDot 0.7s cubic-bezier(0.2,0,0.2,1) both; margin-bottom: 36px;
-}
-.iv-hero-dot-inner {
-  width: 8px; height: 8px; border-radius: 50%; background: #c9a84c;
-  margin: 0 auto; box-shadow: 0 0 20px rgba(201,168,76,0.6);
-}
-.iv-hero h1 {
-  animation: ivUp 1.4s 0.25s cubic-bezier(0.16,1,0.3,1) both;
-  font-weight: 300; font-size: clamp(44px,11vw,128px);
-  letter-spacing: 0.28em; line-height: 1; color: #ede8d4; text-transform: uppercase;
-}
-.iv-hero-sub {
-  animation: ivUp 1.2s 0.75s cubic-bezier(0.16,1,0.3,1) both;
-  margin-top: 22px; font-style: italic; font-weight: 300;
-  font-size: clamp(18px,2.5vw,27px); color: rgba(237,232,212,0.85); letter-spacing: 0.04em;
-}
-.iv-hero-tag {
-  animation: ivUp 1s 1.2s cubic-bezier(0.16,1,0.3,1) both;
-  margin-top: 13px; font-family: 'Jost'; font-weight: 200;
-  font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(201,168,76,0.55);
-}
-.iv-scroll-cue {
-  position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); z-index: 2;
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  animation: ivUp 1s 2.2s cubic-bezier(0.16,1,0.3,1) both;
-}
-.iv-scroll-label {
-  font-family: 'Jost'; font-weight: 200; font-size: 10px;
-  letter-spacing: 0.26em; text-transform: uppercase; color: rgba(201,168,76,0.45);
-}
-.iv-scroll-line {
-  width: 1px; height: 38px;
-  background: linear-gradient(to bottom, rgba(201,168,76,0.45), transparent);
-  animation: ivFloat 2.5s 2.8s ease-in-out infinite;
-}
+.hero{background:var(--green);color:var(--on-dark);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding-top:88px;padding-bottom:0}
+.hero h1{font-size:clamp(44px,4.6vw,62px);line-height:1.08;margin-bottom:24px}
+.hero h1 em{font-style:italic;font-weight:500;color:var(--gold)}
+.hero-sub{font-size:19px;color:var(--on-dark-soft);max-width:520px;margin-bottom:36px}
+.stores{display:flex;gap:14px;flex-wrap:wrap}
+.store{display:inline-flex;align-items:center;gap:12px;height:58px;padding:0 22px 0 18px;border-radius:12px;background:#000;color:#fff;border:1px solid rgba(255,255,255,.22);text-decoration:none;cursor:pointer;font-family:var(--sans);transition:border-color .15s ease,transform .15s ease}
+.store:hover{border-color:rgba(255,255,255,.5)}
+.store:active{transform:scale(.98)}
+.store svg{width:26px;height:26px;flex:none}
+.store span{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1}
+.store small{font-size:11px;letter-spacing:.04em;opacity:.8}
+.store b{font-size:19px;font-weight:600}
+.hero-note{margin-top:18px;font-size:14px;color:rgba(237,232,212,.55)}
+.hero-phones{position:relative;height:560px;align-self:end}
+.phone{border-radius:38px;padding:9px;background:#050805;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 30px 60px rgba(0,0,0,.45)}
+.phone img{width:100%;aspect-ratio:764/1600;object-fit:cover;object-position:top;border-radius:30px}
+.hero-phones .phone{position:absolute;width:262px;bottom:-120px}
+.hero-phones .p1{left:6%;z-index:2}
+.hero-phones .p2{left:44%;bottom:-60px;opacity:.95}
 
-/* Section rule + overline */
-.iv-overline {
-  display: flex; align-items: center; gap: 16px; margin-bottom: 36px;
-}
-.iv-overline-rule { height: 1px; width: 44px; background: rgba(201,168,76,0.35); }
-.iv-overline-text {
-  font-family: 'Jost'; font-weight: 300; font-size: 10px;
-  letter-spacing: 0.26em; text-transform: uppercase; color: rgba(201,168,76,0.6);
-}
+/* Proof strip */
+.lenses{background:var(--green-2);color:var(--on-dark-soft);border-top:1px solid var(--green-line)}
+.lenses .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:22px;padding-bottom:22px;font-size:15px}
+.lenses ul{display:flex;gap:36px;list-style:none;margin:0;padding:0}
+.lenses li{color:var(--on-dark)}
 
-/* Two-column split sections (text + phone) */
-.iv-split {
-  max-width: 1100px; margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
-  gap: clamp(48px, 8vw, 100px);
-  align-items: center;
-}
-.iv-split-text h2 {
-  font-size: clamp(28px,3.8vw,50px); font-weight: 300; font-style: italic;
-  color: #ede8d4; line-height: 1.2; margin-bottom: 28px;
-}
-.iv-split-text p {
-  font-size: clamp(16px,1.7vw,19px); font-weight: 300; line-height: 1.9;
-  color: rgba(237,232,212,0.65); margin-bottom: 28px;
-}
-.iv-split-text p.iv-italic {
-  font-style: italic; color: #ede8d4;
-}
+/* Sections */
+section{padding:112px 0}
+.sec-head{max-width:640px;margin-bottom:64px}
+.sec-head h2{font-size:clamp(34px,3.2vw,44px);line-height:1.15;margin-bottom:16px}
+.sec-head p{font-size:18px;color:var(--ink-soft)}
+.dark .sec-head p{color:var(--on-dark-soft)}
 
-/* Phone mockup */
-.iv-phone-wrap {
-  display: flex; justify-content: center;
-}
-.iv-phone {
-  width: min(100%, 264px);
-  border-radius: 44px; overflow: hidden;
-  border: 1px solid rgba(201,168,76,0.2);
-  box-shadow: 0 50px 100px rgba(0,0,0,0.75);
-}
-.iv-phone img {
-  width: 100%; display: block;
-}
+.feature{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;padding:40px 0}
+.feature+.feature{border-top:1px solid rgba(22,36,26,.1)}
+.feature.flip .f-media{order:2}
+.f-media{display:flex;justify-content:center;background:var(--cream-2);border-radius:24px;padding:48px 0 0;overflow:hidden;height:460px}
+.f-media .phone{width:250px;align-self:flex-start}
+.f-text h3{font-size:30px;line-height:1.2;margin-bottom:14px}
+.f-text p{color:var(--ink-soft);margin-bottom:18px;max-width:460px}
+.f-text ul{margin:0;padding:0;list-style:none;color:var(--ink);font-size:16px}
+.f-text li{padding:8px 0 8px 26px;position:relative;border-top:1px solid rgba(22,36,26,.08)}
+.f-text li::before{content:"";position:absolute;left:2px;top:17px;width:10px;height:6px;border-left:2px solid var(--gold-ink);border-bottom:2px solid var(--gold-ink);transform:rotate(-45deg)}
 
-/* Feature grid */
-.iv-feat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1px;
-  background: rgba(201,168,76,0.09);
-}
-.iv-feat-card { background: #09130a; overflow: hidden; }
-.iv-feat-img {
-  height: 180px; overflow: hidden; position: relative;
-}
-.iv-feat-img img {
-  width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: brightness(0.6);
-}
-.iv-feat-img::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to bottom, transparent 40%, #09130a);
-}
-.iv-feat-body { padding: 28px 36px 44px; }
-.iv-feat-label {
-  font-family: 'Jost'; font-weight: 300; font-size: 10px;
-  letter-spacing: 0.24em; text-transform: uppercase;
-  color: rgba(201,168,76,0.6); margin-bottom: 12px;
-}
-.iv-feat-title {
-  font-size: 22px; font-weight: 300; font-style: italic;
-  color: #ede8d4; margin-bottom: 12px; line-height: 1.2;
-}
-.iv-feat-desc {
-  font-size: 15px; font-weight: 300; line-height: 1.85;
-  color: rgba(237,232,212,0.55);
-}
+/* Steps */
+.steps-sec{background:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{border:1px solid rgba(22,36,26,.12);border-radius:18px;padding:32px 28px;counter-increment:s}
+.steps li::before{content:counter(s);display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--green);color:var(--gold);font:600 16px/1 var(--serif);margin-bottom:22px}
+.steps h3{font-size:22px;margin-bottom:10px}
+.steps p{color:var(--ink-soft);font-size:16px}
+.tag{display:inline-block;margin-left:8px;padding:3px 9px;border-radius:999px;background:rgba(201,168,76,.18);color:var(--gold-ink);font:600 11px/1.4 var(--sans);letter-spacing:.04em;vertical-align:middle;text-transform:uppercase}
 
-/* Screenshots fan */
-.iv-screenshots {
-  display: flex; align-items: flex-end; justify-content: center;
-  gap: clamp(12px,2.5vw,28px); flex-wrap: wrap;
-}
-.iv-phone-side {
-  flex-shrink: 0;
-  border-radius: clamp(24px,4vw,38px); overflow: hidden;
-  border: 1px solid rgba(201,168,76,0.16); box-shadow: 0 36px 72px rgba(0,0,0,0.7);
-}
-.iv-phone-side img { width: 100%; display: block; }
-.iv-phone-center {
-  flex-shrink: 0;
-  width: clamp(175px,22vw,265px);
-  border-radius: clamp(28px,5vw,44px); overflow: hidden;
-  border: 1px solid rgba(201,168,76,0.28);
-  box-shadow: 0 60px 120px rgba(0,0,0,0.88), 0 0 50px rgba(201,168,76,0.07);
-}
-.iv-phone-center img { width: 100%; display: block; }
+/* Privacy band */
+.privacy{background:var(--green);color:var(--on-dark)}
+.privacy .wrap{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.privacy h2{font-size:clamp(32px,3vw,42px);line-height:1.15}
+.privacy-list{display:grid;gap:26px}
+.privacy-list h3{font:600 17px/1.3 var(--sans);margin-bottom:6px}
+.privacy-list p{color:var(--on-dark-soft);font-size:16px}
 
-/* Soul Note divider */
-.iv-soul-divider {
-  display: flex; align-items: center; gap: 16px; justify-content: center; margin-bottom: 52px;
+/* FAQ */
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:80px}
+details{border-top:1px solid rgba(22,36,26,.14);padding:4px 0}
+details:last-child{border-bottom:1px solid rgba(22,36,26,.14)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 0;font:500 18px/1.4 var(--sans)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:400 26px/1 var(--sans);color:var(--gold-ink);transition:transform .2s ease}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--ink-soft);padding:0 40px 22px 0}
+
+/* Waitlist */
+.waitlist{background:var(--green-2);color:var(--on-dark)}
+.wl-box{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;border:1px solid var(--green-line);border-radius:28px;padding:56px;background:var(--green)}
+.wl-box h2{font-size:clamp(32px,3vw,42px);line-height:1.15;margin-bottom:14px}
+.wl-box p{color:var(--on-dark-soft)}
+.wl-form label{display:block;font-size:14px;color:var(--on-dark-soft);margin-bottom:10px}
+.wl-row{display:flex;gap:10px}
+.wl-row input{flex:1;min-width:0;height:54px;padding:0 18px;border-radius:12px;border:1px solid rgba(237,232,212,.25);background:rgba(237,232,212,.06);color:var(--on-dark);font:400 16px var(--sans)}
+.wl-row input::placeholder{color:rgba(237,232,212,.4)}
+.wl-row input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.wl-row .btn{height:54px;padding:0 26px}
+.wl-row .btn[disabled]{opacity:.6;cursor:default}
+.wl-msg{min-height:24px;margin-top:12px;font-size:15px}
+.wl-msg.ok{color:#cfe3c4}.wl-msg.err{color:#f1c7a8}
+.wl-fine{margin-top:6px;font-size:13px;color:rgba(237,232,212,.45)}
+
+/* Footer */
+footer{background:var(--green);color:var(--on-dark-soft);font-size:15px;border-top:1px solid var(--green-line)}
+footer .wrap{display:flex;align-items:center;gap:40px;padding-top:40px;padding-bottom:40px}
+footer img{height:22px;width:auto}
+footer nav{display:flex;gap:26px;margin-left:auto}
+footer a{text-decoration:none}
+footer a:hover{color:var(--on-dark)}
+
+@media (max-width:1080px){
+  .hero .wrap,.feature,.privacy .wrap,.faq-grid,.wl-box{gap:48px}
+  .hero-phones .phone{width:220px}
 }
-.iv-soul-rule { height: 1px; width: 56px; background: rgba(201,168,76,0.28); }
-.iv-soul-dot {
-  width: 5px; height: 5px; border-radius: 50%; background: #c9a84c;
-  animation: ivPulse 3s ease-in-out infinite;
-}
-
-/* CTA buttons */
-.iv-cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.iv-cta-btn {
-  display: inline-flex; align-items: center; gap: 12px; padding: 16px 38px;
-  border: 1px solid rgba(201,168,76,0.38); color: #c9a84c;
-  font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 300;
-  font-size: 20px; letter-spacing: 0.04em; background: rgba(201,168,76,0.04);
-}
-
-/* Scroll-reveal base state */
-[data-anim] {
-  opacity: 0; transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1);
-}
-
-/* ── MOBILE ────────────────────────────────────────────────────── */
-@media (max-width: 680px) {
-  #iv-nav { padding: 18px 22px; }
-  .iv-nav-link { display: none; }
-  #iv-phone-side-l, #iv-phone-side-r { display: none; }
-}
-
-@media (max-width: 768px) {
-  /* Phone mockups: cap height so they don't show as a full phone screen */
-  .iv-phone { max-height: 44vh; }
-  .iv-phone img { height: 44vh; object-fit: cover; object-position: top center; }
-
-  /* Screenshots center phone */
-  .iv-phone-center { max-height: 40vh; }
-  .iv-phone-center img { height: 40vh; object-fit: cover; object-position: top center; }
-
-  /* Feature cards: 2 per row so they don't stack to a single endless column */
-  .iv-feat-grid { grid-template-columns: repeat(2, 1fr); }
-  .iv-feat-img { height: 110px; }
-  .iv-feat-body { padding: 16px 20px 28px; }
-  .iv-feat-title { font-size: 18px; }
-  .iv-feat-desc { font-size: 13px; }
-
-  /* Tighter section gaps */
-  .iv-split { gap: clamp(28px, 5vw, 48px); }
-}
-
-@media (max-width: 420px) {
-  /* Very small: single column feature cards */
-  .iv-feat-grid { grid-template-columns: 1fr; }
-}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.store,.btn{transition:none}}
 </style>
 </head>
 <body>
 
-<canvas id="iv-c" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;"></canvas>
-
-<!-- Nav -->
-<nav id="iv-nav">
-  <a href="#" id="iv-nav-logo">
-    <span></span>
-    innerverse
-  </a>
-  <div class="iv-nav-links">
-    <a class="iv-nav-link" href="#features">The App</a>
-    <a href="#download" class="iv-nav-btn">Begin</a>
+<header class="nav">
+  <div class="wrap">
+    <a class="nav-logo" href="#top" aria-label="Innerverse home"><img src="img/logo.png" alt="Innerverse" width="96" height="26"></a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-gold" href="#download">Get the app</a>
   </div>
-</nav>
+</header>
 
-<!-- Hero -->
-<section class="iv-hero">
-  <div class="iv-hero-bg"></div>
-  <div class="iv-hero-overlay"></div>
-  <div class="iv-hero-content">
-    <div class="iv-hero-dot"><div class="iv-hero-dot-inner"></div></div>
-    <h1>INNERVERSE</h1>
-    <p class="iv-hero-sub">Your inner world is waiting.</p>
-    <p class="iv-hero-tag">Explore You</p>
-  </div>
-  <div class="iv-scroll-cue">
-    <span class="iv-scroll-label">Scroll</span>
-    <div class="iv-scroll-line"></div>
-  </div>
-</section>
-
-<!-- Opening Quote -->
-<section style="padding:clamp(56px,14vw,160px) clamp(24px,10vw,140px);position:relative;z-index:2;background:linear-gradient(to bottom,#09130a,#101d11);text-align:center;">
-  <p data-anim style="max-width:740px;margin:0 auto;font-size:clamp(22px,3.2vw,42px);font-style:italic;font-weight:300;line-height:1.55;color:#ede8d4;">"Most personality apps give you a type.<br>Innerverse gives you a mirror."</p>
-</section>
-
-<!-- The Problem -->
-<section style="padding:clamp(48px,10vw,130px) clamp(24px,5vw,64px);position:relative;z-index:2;background:#101d11;">
-  <div class="iv-split">
-    <div class="iv-split-text">
-      <div class="iv-overline" data-anim><div class="iv-overline-rule"></div><span class="iv-overline-text">The problem</span></div>
-      <h2 data-anim data-delay="0.1">Knowing your type is not the same as knowing yourself.</h2>
-      <p data-anim data-delay="0.2">Most tools hand you a label and leave you with it. Four letters. An Enneagram number. A constellation. Tidy, categorised — and somehow, still not quite you.</p>
-      <p class="iv-italic" data-anim data-delay="0.32" style="font-size:clamp(18px,2vw,24px);font-style:italic;font-weight:300;color:#ede8d4;line-height:1.7;">Innerverse was built for what comes after the label.</p>
-    </div>
-    <div class="iv-phone-wrap" data-anim>
-      <div class="iv-phone">
-        <img src="img/universe.jpg" alt="Your Journey">
+<main id="top">
+  <section class="hero" style="padding:0">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Self-discovery app</p>
+        <h1>Know yourself beyond <em>the label.</em></h1>
+        <p class="hero-sub">Innerverse brings your personality type, Enneagram, zodiac and journal into one private app, with a reflection guide that reads your whole profile before you write a word.</p>
+        <div class="stores" id="download">
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.innerverse.world" target="_blank" rel="noopener" aria-label="Get Innerverse on Google Play">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#34a853" d="M3.6 2.3 13.4 12l-9.8 9.7c-.4-.2-.6-.6-.6-1.1V3.4c0-.5.2-.9.6-1.1z"/><path fill="#fbbc04" d="m16.7 15.3-3.3-3.3 3.3-3.3 3.8 2.2c1 .6 1 1.6 0 2.2l-3.8 2.2z"/><path fill="#ea4335" d="M16.7 15.3 13.4 12l-9.8 9.7c.4.2.9.2 1.4-.1l11.7-6.3z"/><path fill="#4285f4" d="M16.7 8.7 5 2.4c-.5-.3-1-.3-1.4-.1l9.8 9.7 3.3-3.3z"/></svg>
+            <span><small>GET IT ON</small><b>Google Play</b></span>
+          </a>
+          <a class="store" href="#iphone" data-wl aria-label="iPhone version coming soon: join the waitlist">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.5-1-2.5-3.9zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z"/></svg>
+            <span><small>COMING SOON ON THE</small><b>App Store</b></span>
+          </a>
+        </div>
+        <p class="hero-note">Free to start on Android. On iPhone? <a href="#iphone" data-wl>Join the waitlist</a>.</p>
+      </div>
+      <div class="hero-phones" aria-hidden="true">
+        <div class="phone p1"><img src="img/screen-universe.jpg" alt=""></div>
+        <div class="phone p2"><img src="img/screen-reflect.jpg" alt=""></div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- The Mirror -->
-<section style="padding:clamp(48px,10vw,130px) clamp(24px,5vw,64px);position:relative;z-index:2;background:linear-gradient(to bottom,#101d11,#09130a);">
-  <div class="iv-split">
-    <div class="iv-phone-wrap" data-anim style="order:1;">
-      <div class="iv-phone" style="border-color:rgba(201,168,76,0.25);box-shadow:0 50px 100px rgba(0,0,0,0.75),0 0 40px rgba(201,168,76,0.06);">
-        <img src="img/profile.jpg" alt="Inner Profile">
+  <div class="lenses">
+    <div class="wrap">
+      <span>One profile, four lenses</span>
+      <ul><li>Personality type</li><li>Enneagram</li><li>Wound type</li><li>Zodiac</li></ul>
+    </div>
+  </div>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">What's inside</p>
+        <h2>Everything you learn about yourself, in one place.</h2>
+        <p>Most tests give you a result and stop there. Innerverse keeps what it learns about you and uses it every time you write.</p>
       </div>
-    </div>
-    <div class="iv-split-text" style="order:2;">
-      <div class="iv-overline" data-anim><div class="iv-overline-rule"></div><span class="iv-overline-text">What Innerverse is</span></div>
-      <h2 data-anim data-delay="0.1">Four ancient lenses.<br>One living portrait.</h2>
-      <p data-anim data-delay="0.2">Your MBTI maps how you think. Your Enneagram reveals what drives you. Your wound type traces what shaped you. Your zodiac marks how you move through time.</p>
-      <p class="iv-italic" data-anim data-delay="0.32" style="font-size:clamp(16px,1.7vw,19px);font-style:italic;font-weight:300;line-height:1.9;color:#ede8d4;">Innerverse holds all four — and reads the space between them.</p>
-    </div>
-  </div>
-</section>
 
-<!-- Four Dimensions -->
-<section id="features" style="padding:clamp(48px,10vw,120px) clamp(24px,5vw,64px) clamp(56px,13vw,140px);position:relative;z-index:2;background:#09130a;">
-  <div style="max-width:1120px;margin:0 auto;">
-    <div data-anim style="text-align:center;margin-bottom:clamp(32px,6vw,72px);">
-      <p style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:18px;">Four dimensions of self</p>
-      <h2 style="font-size:clamp(28px,4.2vw,54px);font-weight:300;font-style:italic;color:#ede8d4;line-height:1.2;">The parts of you that have never<br>existed in the same room.</h2>
-    </div>
-    <div class="iv-feat-grid">
-      <div class="iv-feat-card" data-anim data-delay="0.05">
-        <div class="iv-feat-img"><img src="img/universe.jpg" alt="Universe"></div>
-        <div class="iv-feat-body">
-          <p class="iv-feat-label">Universe</p>
-          <h3 class="iv-feat-title">Your Complete Portrait</h3>
-          <p class="iv-feat-desc">MBTI, Enneagram, wound type, zodiac — unified into one psychological map. Finally in the same room.</p>
+      <div class="feature">
+        <div class="f-media"><div class="phone"><img src="img/screen-universe.jpg" alt="The Innerverse journey map with four levels" loading="lazy"></div></div>
+        <div class="f-text">
+          <h3>A map that grows with you</h3>
+          <p>Your journey is laid out as four levels. Each one asks a set of questions and adds a new layer to your profile.</p>
+          <ul><li>Start with The Beginning, free</li><li>Unlock Your Mind as you go</li><li>Go deeper with Your Core and Your Strengths</li></ul>
         </div>
       </div>
-      <div class="iv-feat-card" data-anim data-delay="0.15">
-        <div class="iv-feat-img"><img src="img/journal.jpg" alt="Journal" style="object-position:center 30%;"></div>
-        <div class="iv-feat-body">
-          <p class="iv-feat-label">Journal</p>
-          <h3 class="iv-feat-title">Stop Performing</h3>
-          <p class="iv-feat-desc">No prompts. No format. Just you and the page and whatever is alive in you today.</p>
+
+      <div class="feature flip">
+        <div class="f-media"><div class="phone"><img src="img/screen-reflect.jpg" alt="A Reflect conversation in the app" loading="lazy"></div></div>
+        <div class="f-text">
+          <h3>Reflect with a guide that knows your type</h3>
+          <p>Reflect reads your full profile before the conversation starts, so its answers fit how you actually think, not a generic personality type.</p>
+          <ul><li>Every session ends with a one-line Soul Note</li><li>Past sessions are saved for you to revisit</li><li>A daily streak keeps you coming back</li></ul>
         </div>
       </div>
-      <div class="iv-feat-card" data-anim data-delay="0.25">
-        <div class="iv-feat-img"><img src="img/reflect.jpg" alt="Reflect"></div>
-        <div class="iv-feat-body">
-          <p class="iv-feat-label">Reflect</p>
-          <h3 class="iv-feat-title">The Mirror That Knows You</h3>
-          <p class="iv-feat-desc">The AI reads your full profile before you begin. When you write, it responds to you — not a template, not a type. You.</p>
+
+      <div class="feature">
+        <div class="f-media"><div class="phone"><img src="img/screen-journal.jpg" alt="The Innerverse journal" loading="lazy"></div></div>
+        <div class="f-text">
+          <h3>A journal without prompts or performance</h3>
+          <p>Write whatever is on your mind, as long or as short as you like. Edit or delete entries any time.</p>
+          <ul><li>No templates, word counts or streak pressure</li><li>Daily Mirror gives you one question a day, drawn from your profile</li></ul>
         </div>
       </div>
-      <div class="iv-feat-card" data-anim data-delay="0.35">
-        <div class="iv-feat-img"><img src="img/profile.jpg" alt="Inner Profile"></div>
-        <div class="iv-feat-body">
-          <p class="iv-feat-label">Inner Profile</p>
-          <h3 class="iv-feat-title">The Record of Your Unfolding</h3>
-          <p class="iv-feat-desc">Every insight. Every Soul Note. A growing record of who you are becoming, held in one place.</p>
+
+      <div class="feature flip">
+        <div class="f-media"><div class="phone"><img src="img/screen-inner-profile.jpg" alt="The Inner Profile screen" loading="lazy"></div></div>
+        <div class="f-text">
+          <h3>Your Inner Profile, card by card</h3>
+          <p>Your personality type, Enneagram, zodiac, strengths and wound type each get their own card, and the picture fills in as you complete each level.</p>
+          <ul><li>Plain-language explanations, not jargon</li><li>See how the lenses connect to each other</li></ul>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Screenshots -->
-<section style="padding:clamp(48px,10vw,120px) 0 clamp(56px,13vw,150px);position:relative;z-index:2;background:#09130a;overflow:hidden;">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(24px,5vw,64px);">
-    <div data-anim style="text-align:center;margin-bottom:clamp(32px,6vw,72px);">
-      <p style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:16px;">Inside the app</p>
-      <h2 style="font-size:clamp(26px,4vw,50px);font-weight:300;font-style:italic;color:#ede8d4;">A different kind of knowing.</h2>
+  <section class="steps-sec" id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">How it works</p>
+        <h2>Three steps to a fuller picture of yourself.</h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Begin, for free</h3><p>Answer The Beginning to set up your profile. It takes a few minutes and costs nothing.</p></li>
+        <li><h3>Unlock Your Mind</h3><p>The next level reveals your personality type and how you tend to think and decide.</p></li>
+        <li><h3>Go deeper <span class="tag">Premium</span></h3><p>Your Core and Your Strengths look at what drives you and where you're strongest, monthly or as a one-time purchase.</p></li>
+      </ol>
     </div>
-    <div class="iv-screenshots">
-      <div id="iv-phone-side-l" data-anim data-delay="0.1" style="transform:rotate(-4deg);transform-origin:bottom center;">
-        <div class="iv-phone-side" style="width:clamp(140px,18vw,216px);">
-          <img src="img/universe.jpg" alt="Your Journey">
+  </section>
+
+  <section class="privacy dark" id="privacy">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Privacy</p>
+        <h2>What you write stays yours.</h2>
+      </div>
+      <div class="privacy-list">
+        <div><h3>Only you can see your entries</h3><p>Your journal, reflections and profile are tied to your account and are not visible to other people.</p></div>
+        <div><h3>Your progress follows you</h3><p>Sign in on a new phone and your levels, journal and sessions come back with you.</p></div>
+        <div><h3>No ads</h3><p>Innerverse is paid for by an optional subscription, not by advertising. Read the full <a href="privacy-policy.html">privacy policy</a>.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap faq-grid">
+      <div class="sec-head" style="margin-bottom:0">
+        <p class="eyebrow">FAQ</p>
+        <h2>Questions, answered.</h2>
+        <p>Something else? Email <a href="mailto:myinnerverse.world@gmail.com">myinnerverse.world@gmail.com</a>.</p>
+      </div>
+      <div>
+        <details><summary>Is Innerverse free?</summary><p>Yes, you can start for free with The Beginning. Premium unlocks the deeper levels and is available as a monthly subscription or a one-time purchase.</p></details>
+        <details><summary>Is it available on iPhone?</summary><p>Not yet. Innerverse is on Android today and the iPhone version is coming. <a href="#iphone" data-wl>Join the waitlist</a> and we'll email you the day it's out.</p></details>
+        <details><summary>Is this a psychological test or therapy?</summary><p>No. Innerverse is a self-reflection tool. It isn't a clinical assessment and isn't a replacement for a therapist or medical care.</p></details>
+        <details><summary>What does the reflection guide do with my writing?</summary><p>It uses your profile and what you write in a session to respond to you. Your sessions are saved to your account so you can come back to them.</p></details>
+        <details><summary>Can I use it on more than one phone?</summary><p>Yes. Sign in with the same account and your progress is restored.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="waitlist" id="iphone">
+    <div class="wrap">
+      <div class="wl-box">
+        <div>
+          <p class="eyebrow">iPhone</p>
+          <h2>Coming soon to the App Store.</h2>
+          <p>Leave your email and we'll let you know the day Innerverse is available on iPhone. One email, no newsletter.</p>
         </div>
-      </div>
-      <div data-anim data-delay="0.2">
-        <div class="iv-phone-center">
-          <img src="img/profile.jpg" alt="Inner Profile">
-        </div>
-      </div>
-      <div id="iv-phone-side-r" data-anim data-delay="0.3" style="transform:rotate(4deg);transform-origin:bottom center;">
-        <div class="iv-phone-side" style="width:clamp(140px,18vw,216px);">
-          <img src="img/journal.jpg" alt="Journal">
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Reflect Spotlight -->
-<section style="padding:clamp(48px,10vw,130px) clamp(24px,5vw,64px);position:relative;z-index:2;background:#0c1a0d;">
-  <div class="iv-split">
-    <div class="iv-phone-wrap" data-anim>
-      <div class="iv-phone">
-        <img src="img/reflect.jpg" alt="Reflect">
+        <form class="wl-form" id="wlForm" novalidate>
+          <label for="wlEmail">Email address</label>
+          <div class="wl-row">
+            <input id="wlEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            <button class="btn btn-gold" type="submit">Join the waitlist</button>
+          </div>
+          <p class="wl-msg" id="wlMsg" role="status" aria-live="polite"></p>
+          <p class="wl-fine">We only use your email to tell you about the iPhone launch.</p>
+        </form>
       </div>
     </div>
-    <div class="iv-split-text">
-      <p data-anim style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:22px;">Reflect</p>
-      <h2 data-anim data-delay="0.1">Your session starts before<br>you say a word.</h2>
-      <p data-anim data-delay="0.2">Before you type a single letter, Reflect has already read your complete psychological architecture. MBTI, Enneagram, wound type — integrated, held, understood.</p>
-      <p class="iv-italic" data-anim data-delay="0.32" style="font-size:clamp(16px,1.7vw,19px);font-style:italic;font-weight:300;line-height:1.9;color:#ede8d4;">What comes back is not assembled for anyone. It is written for the exact way you are wired.</p>
-    </div>
-  </div>
-</section>
+  </section>
+</main>
 
-<!-- Daily Mirror -->
-<section style="padding:clamp(48px,10vw,130px) clamp(24px,5vw,64px);position:relative;z-index:2;background:#09130a;">
-  <div class="iv-split">
-    <div class="iv-split-text">
-      <p data-anim style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:22px;">Daily Mirror</p>
-      <h2 data-anim data-delay="0.1">One question.<br>Drawn from your own depths.</h2>
-      <p data-anim data-delay="0.2">Each morning brings a question drawn directly from your psychology — your wound, your type, your current edges. Not a generic prompt. A mirror held up to the part of you that most needs to be seen today.</p>
-    </div>
-    <div class="iv-phone-wrap" data-anim>
-      <div class="iv-phone">
-        <img src="img/mirror.jpg" alt="Daily Mirror">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Soul Note -->
-<section style="padding:clamp(64px,16vw,190px) clamp(24px,10vw,140px);position:relative;z-index:2;text-align:center;overflow:hidden;">
-  <div style="position:absolute;inset:0;background-image:url('img/journal.jpg');background-size:cover;background-position:center;opacity:0.12;filter:blur(4px);"></div>
-  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#09130a,rgba(9,19,10,0.5),#09130a);"></div>
-  <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;">
-    <div class="iv-soul-divider" data-anim>
-      <div class="iv-soul-rule"></div>
-      <div class="iv-soul-dot"></div>
-      <div class="iv-soul-rule"></div>
-    </div>
-    <p data-anim data-delay="0.05" style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:28px;">Soul Note</p>
-    <h2 data-anim data-delay="0.15" style="font-size:clamp(28px,4.2vw,54px);font-weight:300;font-style:italic;color:#ede8d4;line-height:1.3;margin-bottom:32px;">Every session closes<br>the same way.</h2>
-    <p data-anim data-delay="0.28" style="font-size:clamp(17px,2vw,22px);font-weight:300;line-height:1.9;color:rgba(237,232,212,0.65);margin-bottom:20px;">One sentence. Your truth today, distilled from everything you brought to the page.</p>
-    <p data-anim data-delay="0.38" style="font-size:clamp(17px,2vw,22px);font-style:italic;font-weight:300;color:rgba(237,232,212,0.5);">Small enough to hold. Real enough to carry.</p>
-  </div>
-</section>
-
-<!-- Who It's For -->
-<section style="padding:clamp(48px,10vw,120px) clamp(24px,8vw,100px);position:relative;z-index:2;background:#0c1a0d;">
-  <div style="max-width:760px;margin:0 auto;">
-    <div class="iv-overline" data-anim><div class="iv-overline-rule"></div><span class="iv-overline-text">Who it's for</span></div>
-    <h2 data-anim data-delay="0.1" style="font-size:clamp(30px,5vw,64px);font-weight:300;font-style:italic;color:#ede8d4;line-height:1.1;margin-bottom:40px;">Not for everyone.</h2>
-    <p data-anim data-delay="0.22" style="font-size:clamp(17px,2vw,23px);font-weight:300;line-height:1.85;color:rgba(237,232,212,0.7);margin-bottom:32px;">For the ones who have taken every test and still felt unseen. Who journal in the dark and want something that journals back. Who know they are more layered than any four-letter code has ever come close to capturing.</p>
-    <p data-anim data-delay="0.36" style="font-size:clamp(20px,2.8vw,32px);font-style:italic;font-weight:300;color:#ede8d4;line-height:1.55;">You have been looking for this.<br>Now you know its name.</p>
-  </div>
-</section>
-
-<!-- Final CTA -->
-<section id="download" style="padding:clamp(68px,18vw,210px) clamp(24px,10vw,140px);position:relative;z-index:2;text-align:center;overflow:hidden;background:#09130a;">
-  <div style="position:absolute;inset:0;background-image:url('img/hero-bg.jpg');background-size:cover;background-position:center;opacity:0.08;"></div>
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,rgba(201,168,76,0.04) 0%,transparent 60%);"></div>
-  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#09130a,rgba(9,19,10,0.45),#09130a);"></div>
-  <div style="position:relative;z-index:2;">
-    <div data-anim style="display:inline-flex;align-items:center;gap:8px;margin-bottom:56px;">
-      <div style="width:7px;height:7px;border-radius:50%;background:#c9a84c;box-shadow:0 0 12px rgba(201,168,76,0.4);"></div>
-      <span style="font-family:'Cormorant Garamond';font-weight:300;font-size:20px;letter-spacing:0.04em;color:rgba(237,232,212,0.6);">innerverse</span>
-    </div>
-    <h2 data-anim data-delay="0.1" style="font-size:clamp(44px,10vw,116px);font-weight:300;font-style:italic;color:#ede8d4;line-height:1.02;margin-bottom:18px;">You just found<br>yourself.</h2>
-    <p data-anim data-delay="0.28" style="font-family:'Jost';font-weight:200;font-size:11px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(201,168,76,0.5);margin-bottom:60px;">Explore You</p>
-    <div class="iv-cta-btns" data-anim data-delay="0.42">
-      <a href="#" class="iv-cta-btn">
-        <svg width="14" height="16" viewBox="0 0 15 18" fill="none"><path d="M12.5 9.5C12.5 7 14.5 5.8 14.5 5.8C13.2 3.7 10.8 3.2 9.8 3.2C8.1 3.2 6.4 4.5 5.5 4.5C4.6 4.5 2.9 3.2 1.5 3.2C-0.5 3.2 -1.8 4.6 -1.8 7C-1.8 11.5 1.5 17.2 3.5 17.2C4.3 17.2 4.8 16.7 6 16.7C7.2 16.7 7.7 17.2 8.7 17.2C10.5 17.2 12.5 13.2 14 10.5C14 10.5 12.5 10.1 12.5 9.5Z" fill="#c9a84c" opacity="0.75" transform="translate(0.5,0)"/><path d="M9.8 1.5C10.3 0.2 9.2 -0.2 9.2 -0.2C7.8 0.3 6.5 1.8 6.5 3.5C7.8 3.5 9.3 2.6 9.8 1.5Z" fill="#c9a84c" opacity="0.75" transform="translate(0.5,0.5)"/></svg>
-        App Store
-      </a>
-      <a href="#" class="iv-cta-btn">
-        <svg width="14" height="16" viewBox="0 0 18 20" fill="none"><path d="M1 2L11.5 10L1 18" stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/><path d="M1 2L16 7.5L11.5 10" stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/><path d="M11.5 10L16 12.5L1 18" stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/></svg>
-        Google Play
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer style="padding:44px clamp(24px,5vw,64px);position:relative;z-index:2;background:#09130a;border-top:1px solid rgba(201,168,76,0.07);">
-  <div style="max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div style="width:6px;height:6px;border-radius:50%;background:#c9a84c;opacity:0.5;"></div>
-      <span style="font-family:'Cormorant Garamond';font-weight:300;font-size:17px;color:rgba(237,232,212,0.35);">innerverse</span>
-    </div>
-    <p style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.1em;color:rgba(237,232,212,0.22);">© 2026 Innerverse. All rights reserved.</p>
-    <div style="display:flex;gap:28px;">
-      <a href="#" style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(237,232,212,0.28);">Privacy</a>
-      <a href="#" style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(237,232,212,0.28);">Terms</a>
-    </div>
+<footer>
+  <div class="wrap">
+    <img src="img/logo.png" alt="Innerverse" width="81" height="22">
+    <span>© 2026 Innerverse</span>
+    <nav aria-label="Footer">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-of-service.html">Terms of Service</a>
+      <a href="mailto:myinnerverse.world@gmail.com">Contact</a>
+    </nav>
   </div>
 </footer>
 
 <script>
-(function () {
-  var _raf, _obs, _fallback;
-
-  function initParticles() {
-    var canvas = document.getElementById('iv-c');
-    if (!canvas) return;
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    resize();
-    window.addEventListener('resize', resize, { passive: true });
-    var ctx = canvas.getContext('2d');
-    var pts = Array.from({ length: 160 }, function () {
-      return {
-        x: Math.random(), y: Math.random(),
-        r: Math.random() * 1.0 + 0.25,
-        vy: Math.random() * 0.10 + 0.035,
-        vx: (Math.random() - 0.5) * 0.05,
-        o: Math.random() * 0.55 + 0.2
-      };
+(function(){
+  var SB_URL='https://zcpbtbiqkufypbqzgefd.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjcGJ0Ymlxa3VmeXBicXpnZWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxOTU5NTEsImV4cCI6MjA5NTc3MTk1MX0.u2IBmy2AKic1dHUQjk32tbCeX8OifkktpvVrEXxswHE';
+  var form=document.getElementById('wlForm'),input=document.getElementById('wlEmail'),msg=document.getElementById('wlMsg'),btn=form.querySelector('button');
+  function say(t,c){msg.textContent=t;msg.className='wl-msg'+(c?' '+c:'')}
+  document.querySelectorAll('[data-wl]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      e.preventDefault();
+      document.getElementById('iphone').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+      setTimeout(function(){input.focus({preventScroll:true})},500);
     });
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      var w = canvas.width, h = canvas.height;
-      pts.forEach(function (p) {
-        ctx.beginPath();
-        ctx.arc(p.x * w, p.y * h, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(201,168,76,' + p.o + ')';
-        ctx.fill();
-        p.y -= p.vy / h;
-        p.x += p.vx / w;
-        if (p.y < -0.01) { p.y = 1.01; p.x = Math.random(); }
-        if (p.x < 0) p.x = 1;
-        if (p.x > 1) p.x = 0;
-      });
-      _raf = requestAnimationFrame(draw);
-    }
-    draw();
-  }
-
-  function initNav() {
-    var nav = document.getElementById('iv-nav');
-    if (!nav) return;
-    function update() {
-      var s = window.scrollY > 80;
-      nav.style.background = s ? 'rgba(6,11,6,0.94)' : 'transparent';
-      nav.style.backdropFilter = s ? 'blur(16px)' : 'none';
-      nav.style.webkitBackdropFilter = s ? 'blur(16px)' : 'none';
-      nav.style.borderBottom = s ? '1px solid rgba(201,168,76,0.08)' : 'none';
-    }
-    window.addEventListener('scroll', update, { passive: true });
-    update();
-  }
-
-  function initScrollAnim() {
-    var els = document.querySelectorAll('[data-anim]');
-    _fallback = setTimeout(function () {
-      els.forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
-    }, 3000);
-    _obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var el = entry.target;
-        var delay = parseFloat(el.dataset.delay || '0') * 1000;
-        setTimeout(function () {
-          el.style.opacity = '1';
-          el.style.transform = 'none';
-        }, delay);
-        _obs.unobserve(el);
-      });
-    }, { threshold: 0, rootMargin: '0px 0px 80px 0px' });
-    els.forEach(function (el) { _obs.observe(el); });
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    initParticles();
-    initNav();
-    initScrollAnim();
+  });
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var em=input.value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){say('Please enter a valid email address.','err');input.focus();return}
+    if(btn.disabled)return;btn.disabled=true;say('Joining…');
+    fetch(SB_URL+'/rest/v1/rpc/join_waitlist',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_email:em,p_source:'ios-waitlist-desktop'})})
+      .then(function(r){if(r.ok){say('You’re on the list. We’ll email you when Innerverse is on the App Store.','ok');form.reset()}else{say('Something went wrong. Please try again in a moment.','err')}})
+      .catch(function(){say('Couldn’t connect. Check your internet connection and try again.','err')})
+      .then(function(){btn.disabled=false});
   });
 })();
 </script>
