@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>try{if(!matchMedia('(hover:hover) and (pointer:fine) and (min-width:900px)').matches)location.replace('./'+location.search+location.hash)}catch(e){}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Innerverse — Your Inner World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: #09130a;
+  color: #ede8d4;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+@keyframes ivDot  { from { opacity:0; transform:scale(0.2); } to { opacity:1; transform:scale(1); } }
+@keyframes ivUp   { from { opacity:0; transform:translateY(36px); } to { opacity:1; transform:translateY(0); } }
+@keyframes ivFloat{ 0%,100% { transform:translateY(0); } 50% { transform:translateY(-9px); } }
+@keyframes ivPulse{ 0%,100% { opacity:0.35; } 50% { opacity:0.9; } }
+
+/* Nav */
+#iv-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 22px clamp(24px,5vw,64px);
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.5s, border-bottom 0.5s;
+}
+#iv-nav-logo {
+  display: flex; align-items: center; gap: 9px;
+  font-family: 'Cormorant Garamond'; font-weight: 400; font-size: 21px;
+  letter-spacing: 0.03em; color: #ede8d4;
+}
+#iv-nav-logo span {
+  width: 7px; height: 7px; border-radius: 50%; background: #c9a84c;
+  flex-shrink: 0; box-shadow: 0 0 10px rgba(201,168,76,0.5);
+}
+.iv-nav-links { display: flex; align-items: center; gap: 32px; }
+.iv-nav-link {
+  font-family: 'Jost'; font-weight: 300; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: rgba(237,232,212,0.55);
+}
+.iv-nav-btn {
+  font-family: 'Jost'; font-weight: 300; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 11px 26px; border: 1px solid rgba(201,168,76,0.4); color: #c9a84c;
+}
+
+/* Hero */
+.iv-hero {
+  min-height: 100vh; position: relative;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.iv-hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('img/hero-bg.jpg');
+  background-size: cover; background-position: center 25%;
+}
+.iv-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(9,19,10,0.45) 0%, rgba(9,19,10,0.2) 40%, rgba(9,19,10,0.85) 100%);
+}
+.iv-hero-content {
+  position: relative; z-index: 2; text-align: center;
+  padding: 0 clamp(24px,6vw,80px);
+}
+.iv-hero-dot {
+  animation: ivDot 0.7s cubic-bezier(0.2,0,0.2,1) both; margin-bottom: 36px;
+}
+.iv-hero-dot-inner {
+  width: 8px; height: 8px; border-radius: 50%; background: #c9a84c;
+  margin: 0 auto; box-shadow: 0 0 20px rgba(201,168,76,0.6);
+}
+.iv-hero h1 {
+  animation: ivUp 1.4s 0.25s cubic-bezier(0.16,1,0.3,1) both;
+  font-weight: 300; font-size: clamp(44px,11vw,128px);
+  letter-spacing: 0.28em; line-height: 1; color: #ede8d4; text-transform: uppercase;
+}
+.iv-hero-sub {
+  animation: ivUp 1.2s 0.75s cubic-bezier(0.16,1,0.3,1) both;
+  margin-top: 22px; font-style: italic; font-weight: 300;
+  font-size: clamp(18px,2.5vw,27px); color: rgba(237,232,212,0.85); letter-spacing: 0.04em;
+}
+.iv-hero-tag {
+  animation: ivUp 1s 1.2s cubic-bezier(0.16,1,0.3,1) both;
+  margin-top: 13px; font-family: 'Jost'; font-weight: 200;
+  font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(201,168,76,0.55);
+}
+.iv-scroll-cue {
+  position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  animation: ivUp 1s 2.2s cubic-bezier(0.16,1,0.3,1) both;
+}
+.iv-scroll-label {
+  font-family: 'Jost'; font-weight: 200; font-size: 10px;
+  letter-spacing: 0.26em; text-transform: uppercase; color: rgba(201,168,76,0.45);
+}
+.iv-scroll-line {
+  width: 1px; height: 38px;
+  background: linear-gradient(to bottom, rgba(201,168,76,0.45), transparent);
+  animation: ivFloat 2.5s 2.8s ease-in-out infinite;
+}
+
+/* Section rule + overline */
+.iv-overline {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 36px;
+}
+.iv-overline-rule { height: 1px; width: 44px; background: rgba(201,168,76,0.35); }
+.iv-overline-text {
+  font-family: 'Jost'; font-weight: 300; font-size: 10px;
+  letter-spacing: 0.26em; text-transform: uppercase; color: rgba(201,168,76,0.6);
+}
+
+/* Two-column split sections (text + phone) */
+.iv-split {
+  max-width: 1100px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  gap: clamp(48px, 8vw, 100px);
+  align-items: center;
+}
+.iv-split-text h2 {
+  font-size: clamp(28px,3.8vw,50px); font-weight: 300; font-style: italic;
+  color: #ede8d4; line-height: 1.2; margin-bottom: 28px;
+}
+.iv-split-text p {
+  font-size: clamp(16px,1.7vw,19px); font-weight: 300; line-height: 1.9;
+  color: rgba(237,232,212,0.65); margin-bottom: 28px;
+}
+.iv-split-text p.iv-italic {
+  font-style: italic; color: #ede8d4;
+}
+
+/* Phone mockup */
+.iv-phone-wrap {
+  display: flex; justify-content: center;
+}
+.iv-phone {
+  width: min(100%, 264px);
+  border-radius: 44px; overflow: hidden;
+  border: 1px solid rgba(201,168,76,0.2);
+  box-shadow: 0 50px 100px rgba(0,0,0,0.75);
+}
+.iv-phone img {
+  width: 100%; display: block;
+}
+
+/* Feature grid */
+.iv-feat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1px;
+  background: rgba(201,168,76,0.09);
+}
+.iv-feat-card { background: #09130a; overflow: hidden; }
+.iv-feat-img {
+  height: 180px; overflow: hidden; position: relative;
+}
+.iv-feat-img img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: brightness(0.6);
+}
+.iv-feat-img::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, #09130a);
+}
+.iv-feat-body { padding: 28px 36px 44px; }
+.iv-feat-label {
+  font-family: 'Jost'; font-weight: 300; font-size: 10px;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  color: rgba(201,168,76,0.6); margin-bottom: 12px;
+}
+.iv-feat-title {
+  font-size: 22px; font-weight: 300; font-style: italic;
+  color: #ede8d4; margin-bottom: 12px; line-height: 1.2;
+}
+.iv-feat-desc {
+  font-size: 15px; font-weight: 300; line-height: 1.85;
+  color: rgba(237,232,212,0.55);
+}
+
+/* Screenshots fan */
+.iv-screenshots {
+  display: flex; align-items: flex-end; justify-content: center;
+  gap: clamp(12px,2.5vw,28px); flex-wrap: wrap;
+}
+.iv-phone-side {
+  flex-shrink: 0;
+  border-radius: clamp(24px,4vw,38px); overflow: hidden;
+  border: 1px solid rgba(201,168,76,0.16); box-shadow: 0 36px 72px rgba(0,0,0,0.7);
+}
+.iv-phone-side img { width: 100%; display: block; }
+.iv-phone-center {
+  flex-shrink: 0;
+  width: clamp(175px,22vw,265px);
+  border-radius: clamp(28px,5vw,44px); overflow: hidden;
+  border: 1px solid rgba(201,168,76,0.28);
+  box-shadow: 0 60px 120px rgba(0,0,0,0.88), 0 0 50px rgba(201,168,76,0.07);
+}
+.iv-phone-center img { width: 100%; display: block; }
+
+/* Soul Note divider */
+.iv-soul-divider {
+  display: flex; align-items: center; gap: 16px; justify-content: center; margin-bottom: 52px;
+}
+.iv-soul-rule { height: 1px; width: 56px; background: rgba(201,168,76,0.28); }
+.iv-soul-dot {
+  width: 5px; height: 5px; border-radius: 50%; background: #c9a84c;
+  animation: ivPulse 3s ease-in-out infinite;
+}
+
+/* CTA buttons */
+.iv-cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.iv-cta-btn {
+  display: inline-flex; align-items: center; gap: 12px; padding: 16px 38px;
+  border: 1px solid rgba(201,168,76,0.38); color: #c9a84c;
+  font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 300;
+  font-size: 20px; letter-spacing: 0.04em; background: rgba(201,168,76,0.04);
+}
+
+/* Scroll-reveal base state */
+[data-anim] {
+  opacity: 0; transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* ── MOBILE ────────────────────────────────────────────────────── */
+@media (max-width: 680px) {
+  #iv-nav { padding: 18px 22px; }
+  .iv-nav-link { display: none; }
+  #iv-phone-side-l, #iv-phone-side-r { display: none; }
+}
+
+@media (max-width: 768px) {
+  /* Phone mockups: cap height so they don't show as a full phone screen */
+  .iv-phone { max-height: 44vh; }
+  .iv-phone img { height: 44vh; object-fit: cover; object-position: top center; }
+
+  /* Screenshots center phone */
+  .iv-phone-center { max-height: 40vh; }
+  .iv-phone-center img { height: 40vh; object-fit: cover; object-position: top center; }
+
+  /* Feature cards: 2 per row so they don't stack to a single endless column */
+  .iv-feat-grid { grid-template-columns: repeat(2, 1fr); }
+  .iv-feat-img { height: 110px; }
+  .iv-feat-body { padding: 16px 20px 28px; }
+  .iv-feat-title { font-size: 18px; }
+  .iv-feat-desc { font-size: 13px; }
+
+  /* Tighter section gaps */
+  .iv-split { gap: clamp(28px, 5vw, 48px); }
+}
+
+@media (max-width: 420px) {
+  /* Very small: single column feature cards */
+  .iv-feat-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="iv-c" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;"></canvas>
+
+<!-- Nav -->
+<nav id="iv-nav">
+  <a href="#" id="iv-nav-logo">
+    <span></span>
+    innerverse
+  </a>
+  <div class="iv-nav-links">
+    <a class="iv-nav-link" href="#features">The App</a>
+    <a href="#download" class="iv-nav-btn">Begin</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="iv-hero">
+  <div class="iv-hero-bg"></div>
+  <div class="iv-hero-overlay"></div>
+  <div class="iv-hero-content">
+    <div class="iv-hero-dot"><div class="iv-hero-dot-inner"></div></div>
+    <h1>INNERVERSE</h1>
+    <p class="iv-hero-sub">Your inner world is waiting.</p>
+    <p class="iv-hero-tag">Explore You</p>
+  </div>
+  <div class="iv-scroll-cue">
+    <span class="iv-scroll-label">Scroll</span>
+    <div class="iv-scroll-line"></div>
+  </div>
+</section>
+
+<!-- Opening Quote -->
+<section style="padding:clamp(56px,14vw,160px) clamp(24px,10vw,140px);position:relative;z-index:2;background:linear-gradient(to bottom,#09130a,#101d11);text-align:center;">
+  <p data-anim style="max-width:740px;margin:0 auto;font-size:clamp(22px,3.2vw,42px);font-style:italic;font-weight:300;line-height:1.55;color:#ede8d4;">"Most personality apps give you a type.<br>Innerverse gives you a mirror."</p>
+</section>
+
+<!-- The Problem -->
+<section style="padding:clamp(48px,10vw,130px) clamp(24px,5vw,64px);position:relative;z-index:2;background:#101d11;">
+  <div class="iv-split">
+    <div class="iv-split-text">
+      <div class="iv-overline" data-anim><div class="iv-overline-rule"></div><span class="iv-overline-text">The problem</span></div>
+      <h2 data-anim data-delay="0.1">Knowing your type is not the same as knowing yourself.</h2>
+      <p data-anim data-delay="0.2">Most tools hand you a label and leave you with it. Four letters. An Enneagram number. A constellation. Tidy, categorised — and somehow, still not quite you.</p>
+      <p class="iv-italic" data-anim data-delay="0.32" style="font-size:clamp(18px,2vw,24px);font-style:italic;font-weight:300;color:#ede8d4;line-height:1.7;">Innerverse was built for what comes after the label.</p>
+    </div>
+    <div class="iv-phone-wrap" data-anim>
+      <div class="iv-phone">
+        <img src="img/universe.jpg" alt="Your Journey">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- The Mirror -->
+<section style="padding:clamp(48px,10vw,130px) clamp(24px,5vw,64px);position:relative;z-index:2;background:linear-gradient(to bottom,#101d11,#09130a);">
+  <div class="iv-split">
+    <div class="iv-phone-wrap" data-anim style="order:1;">
+      <div class="iv-phone" style="border-color:rgba(201,168,76,0.25);box-shadow:0 50px 100px rgba(0,0,0,0.75),0 0 40px rgba(201,168,76,0.06);">
+        <img src="img/profile.jpg" alt="Inner Profile">
+      </div>
+    </div>
+    <div class="iv-split-text" style="order:2;">
+      <div class="iv-overline" data-anim><div class="iv-overline-rule"></div><span class="iv-overline-text">What Innerverse is</span></div>
+      <h2 data-anim data-delay="0.1">Four ancient lenses.<br>One living portrait.</h2>
+      <p data-anim data-delay="0.2">Your MBTI maps how you think. Your Enneagram reveals what drives you. Your wound type traces what shaped you. Your zodiac marks how you move through time.</p>
+      <p class="iv-italic" data-anim data-delay="0.32" style="font-size:clamp(16px,1.7vw,19px);font-style:italic;font-weight:300;line-height:1.9;color:#ede8d4;">Innerverse holds all four — and reads the space between them.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Four Dimensions -->
+<section id="features" style="padding:clamp(48px,10vw,120px) clamp(24px,5vw,64px) clamp(56px,13vw,140px);position:relative;z-index:2;background:#09130a;">
+  <div style="max-width:1120px;margin:0 auto;">
+    <div data-anim style="text-align:center;margin-bottom:clamp(32px,6vw,72px);">
+      <p style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:18px;">Four dimensions of self</p>
+      <h2 style="font-size:clamp(28px,4.2vw,54px);font-weight:300;font-style:italic;color:#ede8d4;line-height:1.2;">The parts of you that have never<br>existed in the same room.</h2>
+    </div>
+    <div class="iv-feat-grid">
+      <div class="iv-feat-card" data-anim data-delay="0.05">
+        <div class="iv-feat-img"><img src="img/universe.jpg" alt="Universe"></div>
+        <div class="iv-feat-body">
+          <p class="iv-feat-label">Universe</p>
+          <h3 class="iv-feat-title">Your Complete Portrait</h3>
+          <p class="iv-feat-desc">MBTI, Enneagram, wound type, zodiac — unified into one psychological map. Finally in the same room.</p>
+        </div>
+      </div>
+      <div class="iv-feat-card" data-anim data-delay="0.15">
+        <div class="iv-feat-img"><img src="img/journal.jpg" alt="Journal" style="object-position:center 30%;"></div>
+        <div class="iv-feat-body">
+          <p class="iv-feat-label">Journal</p>
+          <h3 class="iv-feat-title">Stop Performing</h3>
+          <p class="iv-feat-desc">No prompts. No format. Just you and the page and whatever is alive in you today.</p>
+        </div>
+      </div>
+      <div class="iv-feat-card" data-anim data-delay="0.25">
+        <div class="iv-feat-img"><img src="img/reflect.jpg" alt="Reflect"></div>
+        <div class="iv-feat-body">
+          <p class="iv-feat-label">Reflect</p>
+          <h3 class="iv-feat-title">The Mirror That Knows You</h3>
+          <p class="iv-feat-desc">The AI reads your full profile before you begin. When you write, it responds to you — not a template, not a type. You.</p>
+        </div>
+      </div>
+      <div class="iv-feat-card" data-anim data-delay="0.35">
+        <div class="iv-feat-img"><img src="img/profile.jpg" alt="Inner Profile"></div>
+        <div class="iv-feat-body">
+          <p class="iv-feat-label">Inner Profile</p>
+          <h3 class="iv-feat-title">The Record of Your Unfolding</h3>
+          <p class="iv-feat-desc">Every insight. Every Soul Note. A growing record of who you are becoming, held in one place.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Screenshots -->
+<section style="padding:clamp(48px,10vw,120px) 0 clamp(56px,13vw,150px);position:relative;z-index:2;background:#09130a;overflow:hidden;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(24px,5vw,64px);">
+    <div data-anim style="text-align:center;margin-bottom:clamp(32px,6vw,72px);">
+      <p style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:16px;">Inside the app</p>
+      <h2 style="font-size:clamp(26px,4vw,50px);font-weight:300;font-style:italic;color:#ede8d4;">A different kind of knowing.</h2>
+    </div>
+    <div class="iv-screenshots">
+      <div id="iv-phone-side-l" data-anim data-delay="0.1" style="transform:rotate(-4deg);transform-origin:bottom center;">
+        <div class="iv-phone-side" style="width:clamp(140px,18vw,216px);">
+          <img src="img/universe.jpg" alt="Your Journey">
+        </div>
+      </div>
+      <div data-anim data-delay="0.2">
+        <div class="iv-phone-center">
+          <img src="img/profile.jpg" alt="Inner Profile">
+        </div>
+      </div>
+      <div id="iv-phone-side-r" data-anim data-delay="0.3" style="transform:rotate(4deg);transform-origin:bottom center;">
+        <div class="iv-phone-side" style="width:clamp(140px,18vw,216px);">
+          <img src="img/journal.jpg" alt="Journal">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reflect Spotlight -->
+<section style="padding:clamp(48px,10vw,130px) clamp(24px,5vw,64px);position:relative;z-index:2;background:#0c1a0d;">
+  <div class="iv-split">
+    <div class="iv-phone-wrap" data-anim>
+      <div class="iv-phone">
+        <img src="img/reflect.jpg" alt="Reflect">
+      </div>
+    </div>
+    <div class="iv-split-text">
+      <p data-anim style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:22px;">Reflect</p>
+      <h2 data-anim data-delay="0.1">Your session starts before<br>you say a word.</h2>
+      <p data-anim data-delay="0.2">Before you type a single letter, Reflect has already read your complete psychological architecture. MBTI, Enneagram, wound type — integrated, held, understood.</p>
+      <p class="iv-italic" data-anim data-delay="0.32" style="font-size:clamp(16px,1.7vw,19px);font-style:italic;font-weight:300;line-height:1.9;color:#ede8d4;">What comes back is not assembled for anyone. It is written for the exact way you are wired.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Daily Mirror -->
+<section style="padding:clamp(48px,10vw,130px) clamp(24px,5vw,64px);position:relative;z-index:2;background:#09130a;">
+  <div class="iv-split">
+    <div class="iv-split-text">
+      <p data-anim style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:22px;">Daily Mirror</p>
+      <h2 data-anim data-delay="0.1">One question.<br>Drawn from your own depths.</h2>
+      <p data-anim data-delay="0.2">Each morning brings a question drawn directly from your psychology — your wound, your type, your current edges. Not a generic prompt. A mirror held up to the part of you that most needs to be seen today.</p>
+    </div>
+    <div class="iv-phone-wrap" data-anim>
+      <div class="iv-phone">
+        <img src="img/mirror.jpg" alt="Daily Mirror">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Soul Note -->
+<section style="padding:clamp(64px,16vw,190px) clamp(24px,10vw,140px);position:relative;z-index:2;text-align:center;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:url('img/journal.jpg');background-size:cover;background-position:center;opacity:0.12;filter:blur(4px);"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#09130a,rgba(9,19,10,0.5),#09130a);"></div>
+  <div style="position:relative;z-index:2;max-width:700px;margin:0 auto;">
+    <div class="iv-soul-divider" data-anim>
+      <div class="iv-soul-rule"></div>
+      <div class="iv-soul-dot"></div>
+      <div class="iv-soul-rule"></div>
+    </div>
+    <p data-anim data-delay="0.05" style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(201,168,76,0.6);margin-bottom:28px;">Soul Note</p>
+    <h2 data-anim data-delay="0.15" style="font-size:clamp(28px,4.2vw,54px);font-weight:300;font-style:italic;color:#ede8d4;line-height:1.3;margin-bottom:32px;">Every session closes<br>the same way.</h2>
+    <p data-anim data-delay="0.28" style="font-size:clamp(17px,2vw,22px);font-weight:300;line-height:1.9;color:rgba(237,232,212,0.65);margin-bottom:20px;">One sentence. Your truth today, distilled from everything you brought to the page.</p>
+    <p data-anim data-delay="0.38" style="font-size:clamp(17px,2vw,22px);font-style:italic;font-weight:300;color:rgba(237,232,212,0.5);">Small enough to hold. Real enough to carry.</p>
+  </div>
+</section>
+
+<!-- Who It's For -->
+<section style="padding:clamp(48px,10vw,120px) clamp(24px,8vw,100px);position:relative;z-index:2;background:#0c1a0d;">
+  <div style="max-width:760px;margin:0 auto;">
+    <div class="iv-overline" data-anim><div class="iv-overline-rule"></div><span class="iv-overline-text">Who it's for</span></div>
+    <h2 data-anim data-delay="0.1" style="font-size:clamp(30px,5vw,64px);font-weight:300;font-style:italic;color:#ede8d4;line-height:1.1;margin-bottom:40px;">Not for everyone.</h2>
+    <p data-anim data-delay="0.22" style="font-size:clamp(17px,2vw,23px);font-weight:300;line-height:1.85;color:rgba(237,232,212,0.7);margin-bottom:32px;">For the ones who have taken every test and still felt unseen. Who journal in the dark and want something that journals back. Who know they are more layered than any four-letter code has ever come close to capturing.</p>
+    <p data-anim data-delay="0.36" style="font-size:clamp(20px,2.8vw,32px);font-style:italic;font-weight:300;color:#ede8d4;line-height:1.55;">You have been looking for this.<br>Now you know its name.</p>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section id="download" style="padding:clamp(68px,18vw,210px) clamp(24px,10vw,140px);position:relative;z-index:2;text-align:center;overflow:hidden;background:#09130a;">
+  <div style="position:absolute;inset:0;background-image:url('img/hero-bg.jpg');background-size:cover;background-position:center;opacity:0.08;"></div>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,rgba(201,168,76,0.04) 0%,transparent 60%);"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#09130a,rgba(9,19,10,0.45),#09130a);"></div>
+  <div style="position:relative;z-index:2;">
+    <div data-anim style="display:inline-flex;align-items:center;gap:8px;margin-bottom:56px;">
+      <div style="width:7px;height:7px;border-radius:50%;background:#c9a84c;box-shadow:0 0 12px rgba(201,168,76,0.4);"></div>
+      <span style="font-family:'Cormorant Garamond';font-weight:300;font-size:20px;letter-spacing:0.04em;color:rgba(237,232,212,0.6);">innerverse</span>
+    </div>
+    <h2 data-anim data-delay="0.1" style="font-size:clamp(44px,10vw,116px);font-weight:300;font-style:italic;color:#ede8d4;line-height:1.02;margin-bottom:18px;">You just found<br>yourself.</h2>
+    <p data-anim data-delay="0.28" style="font-family:'Jost';font-weight:200;font-size:11px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(201,168,76,0.5);margin-bottom:60px;">Explore You</p>
+    <div class="iv-cta-btns" data-anim data-delay="0.42">
+      <a href="#" class="iv-cta-btn">
+        <svg width="14" height="16" viewBox="0 0 15 18" fill="none"><path d="M12.5 9.5C12.5 7 14.5 5.8 14.5 5.8C13.2 3.7 10.8 3.2 9.8 3.2C8.1 3.2 6.4 4.5 5.5 4.5C4.6 4.5 2.9 3.2 1.5 3.2C-0.5 3.2 -1.8 4.6 -1.8 7C-1.8 11.5 1.5 17.2 3.5 17.2C4.3 17.2 4.8 16.7 6 16.7C7.2 16.7 7.7 17.2 8.7 17.2C10.5 17.2 12.5 13.2 14 10.5C14 10.5 12.5 10.1 12.5 9.5Z" fill="#c9a84c" opacity="0.75" transform="translate(0.5,0)"/><path d="M9.8 1.5C10.3 0.2 9.2 -0.2 9.2 -0.2C7.8 0.3 6.5 1.8 6.5 3.5C7.8 3.5 9.3 2.6 9.8 1.5Z" fill="#c9a84c" opacity="0.75" transform="translate(0.5,0.5)"/></svg>
+        App Store
+      </a>
+      <a href="#" class="iv-cta-btn">
+        <svg width="14" height="16" viewBox="0 0 18 20" fill="none"><path d="M1 2L11.5 10L1 18" stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/><path d="M1 2L16 7.5L11.5 10" stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/><path d="M11.5 10L16 12.5L1 18" stroke="#c9a84c" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/></svg>
+        Google Play
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="padding:44px clamp(24px,5vw,64px);position:relative;z-index:2;background:#09130a;border-top:1px solid rgba(201,168,76,0.07);">
+  <div style="max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div style="width:6px;height:6px;border-radius:50%;background:#c9a84c;opacity:0.5;"></div>
+      <span style="font-family:'Cormorant Garamond';font-weight:300;font-size:17px;color:rgba(237,232,212,0.35);">innerverse</span>
+    </div>
+    <p style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.1em;color:rgba(237,232,212,0.22);">© 2026 Innerverse. All rights reserved.</p>
+    <div style="display:flex;gap:28px;">
+      <a href="#" style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(237,232,212,0.28);">Privacy</a>
+      <a href="#" style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(237,232,212,0.28);">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var _raf, _obs, _fallback;
+
+  function initParticles() {
+    var canvas = document.getElementById('iv-c');
+    if (!canvas) return;
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+    var ctx = canvas.getContext('2d');
+    var pts = Array.from({ length: 160 }, function () {
+      return {
+        x: Math.random(), y: Math.random(),
+        r: Math.random() * 1.0 + 0.25,
+        vy: Math.random() * 0.10 + 0.035,
+        vx: (Math.random() - 0.5) * 0.05,
+        o: Math.random() * 0.55 + 0.2
+      };
+    });
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      var w = canvas.width, h = canvas.height;
+      pts.forEach(function (p) {
+        ctx.beginPath();
+        ctx.arc(p.x * w, p.y * h, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(201,168,76,' + p.o + ')';
+        ctx.fill();
+        p.y -= p.vy / h;
+        p.x += p.vx / w;
+        if (p.y < -0.01) { p.y = 1.01; p.x = Math.random(); }
+        if (p.x < 0) p.x = 1;
+        if (p.x > 1) p.x = 0;
+      });
+      _raf = requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
+  function initNav() {
+    var nav = document.getElementById('iv-nav');
+    if (!nav) return;
+    function update() {
+      var s = window.scrollY > 80;
+      nav.style.background = s ? 'rgba(6,11,6,0.94)' : 'transparent';
+      nav.style.backdropFilter = s ? 'blur(16px)' : 'none';
+      nav.style.webkitBackdropFilter = s ? 'blur(16px)' : 'none';
+      nav.style.borderBottom = s ? '1px solid rgba(201,168,76,0.08)' : 'none';
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  function initScrollAnim() {
+    var els = document.querySelectorAll('[data-anim]');
+    _fallback = setTimeout(function () {
+      els.forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
+    }, 3000);
+    _obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        var delay = parseFloat(el.dataset.delay || '0') * 1000;
+        setTimeout(function () {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        }, delay);
+        _obs.unobserve(el);
+      });
+    }, { threshold: 0, rootMargin: '0px 0px 80px 0px' });
+    els.forEach(function (el) { _obs.observe(el); });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initParticles();
+    initNav();
+    initScrollAnim();
+  });
+})();
+</script>
+</body>
+</html>
