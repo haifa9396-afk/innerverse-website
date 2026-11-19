@@ -137,6 +137,19 @@ body.tour-full .logo,body.tour-full .gp{opacity:0;pointer-events:none}
 @media (prefers-reduced-motion: reduce){.breathe,.cue-word,.cue-word span{animation:none}.print-wrap{transition:none}}
 </style>
 
+<style>
+.bg,.scrim,.flood{bottom:auto;height:100vh;height:100lvh}
+.stage,.j-stage{height:100vh;height:100lvh}
+.copy{top:calc(17svh + env(safe-area-inset-top,0px))}
+.print-wrap{bottom:calc(100lvh - 88svh + env(safe-area-inset-bottom,0px))}
+.cue{bottom:calc(100lvh - 93svh + env(safe-area-inset-bottom,0px))}
+.j-map{bottom:auto;height:100%;height:100svh}
+.t-cap{bottom:calc(100lvh - 84svh + env(safe-area-inset-bottom,0px))}
+.t-dots{bottom:calc(100lvh - 88svh + env(safe-area-inset-bottom,0px))}
+.t-next{bottom:calc(100lvh - 96svh + env(safe-area-inset-bottom,0px))}
+.f-inner{padding-bottom:calc(10vmin + 100lvh - 100svh)}
+html,body{overscroll-behavior:none}
+</style>
 <div class="bg" aria-hidden="true"><img id="bgimg" alt="" src="img/background.jpg"></div>
 <div class="scrim" aria-hidden="true"></div>
 <main class="track">
@@ -224,7 +237,7 @@ body.tour-full .logo,body.tour-full .gp{opacity:0;pointer-events:none}
   var p=0,h=0,f=0,holding=false,done=false,buzzed=0,loop=0,last=0,fx=0,fy=0,shown=false,timer=0;
   function stagger(start,end,i,n,span){var s=start+(i/n)*(end-start-span);return reduced?(p>s?1:0):ease(clamp((p-s)/span))}
   function paintScroll(){if(window.__ivJ)return;
-    var max=document.querySelector('.track').offsetHeight-innerHeight;
+    var max=document.querySelector('.track').offsetHeight-document.querySelector('.stage').offsetHeight;
     p=max>0?clamp(scrollY/max):0;
     c1.forEach(function(s,i){var e=stagger(.04,.64,i,c1.length,.06);s.style.transform='translateY('+((1-e)*110).toFixed(1)+'%)';s.style.opacity=e.toFixed(3)});
     c2.forEach(function(s,i){var e=stagger(.38,.7,i,c2.length,.05);s.style.opacity=(e*.92).toFixed(3)});
@@ -253,7 +266,7 @@ body.tour-full .logo,body.tour-full .gp{opacity:0;pointer-events:none}
     flood.classList.toggle('live',fe>0);
   }
   function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms)}catch(e){}}
-  (function(){var c=document.getElementById('jStars'),x=c.getContext('2d');function paintStars(){var d=Math.min(2,window.devicePixelRatio||1),w=innerWidth,h=innerHeight;c.width=w*d;c.height=h*d;x.setTransform(d,0,0,d,0,0);var s=5;function r(){s=(s*16807)%2147483647;return s/2147483647}var n=Math.round(w*h/2600);for(var i=0;i<n;i++){var gold=r()<.12;x.fillStyle=gold?'rgba(201,168,76,'+(.35+r()*.4)+')':'rgba(240,236,220,'+(.25+r()*.5)+')';x.beginPath();x.arc(r()*w,r()*h,gold?.9+r()*.8:.4+r()*.7,0,6.2832);x.fill()}}paintStars();addEventListener('resize',paintStars)})();
+  (function(){var c=document.getElementById('jStars'),x=c.getContext('2d');function paintStars(){var d=Math.min(2,window.devicePixelRatio||1),w=c.clientWidth||innerWidth,h=c.clientHeight||innerHeight;if(c._w===w&&c._h===h)return;c._w=w;c._h=h;c.width=w*d;c.height=h*d;x.setTransform(d,0,0,d,0,0);var s=5;function r(){s=(s*16807)%2147483647;return s/2147483647}var n=Math.round(w*h/2600);for(var i=0;i<n;i++){var gold=r()<.12;x.fillStyle=gold?'rgba(201,168,76,'+(.35+r()*.4)+')':'rgba(240,236,220,'+(.25+r()*.5)+')';x.beginPath();x.arc(r()*w,r()*h,gold?.9+r()*.8:.4+r()*.7,0,6.2832);x.fill()}}paintStars();addEventListener('resize',paintStars)})();
   var PLAY_URL='https://play.google.com/store/apps/details?id=com.innerverse.world';
   var SB_URL='https://zcpbtbiqkufypbqzgefd.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpjcGJ0Ymlxa3VmeXBicXpnZWZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxOTU5NTEsImV4cCI6MjA5NTc3MTk1MX0.u2IBmy2AKic1dHUQjk32tbCeX8OifkktpvVrEXxswHE';var WAITLIST_URL=SB_URL+'/rest/v1/rpc/join_waitlist';
   var TOUR_SHOTS=[{"name": "Journal", "line": "Write without performing.", "src": "img/screen-journal.jpg"}, {"name": "Reflect", "line": "A guide that already knows your type.", "src": "img/screen-reflect.jpg"}, {"name": "Inner Profile", "line": "Watch yourself unfold, card by card.", "src": "img/screen-inner-profile.jpg"}, {"name": "Daily Mirror", "line": "One question a day, drawn from you.", "src": "img/screen-daily-mirror.jpg"}];
