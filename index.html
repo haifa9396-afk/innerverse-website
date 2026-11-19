@@ -45,7 +45,7 @@ h1 .w span{display:inline-block;transform:translateY(110%);opacity:0}
 .print svg{width:13vmin;height:13vmin;overflow:visible;filter:drop-shadow(0 0 1vmin rgba(201,168,76,.4))}
 .print path{fill:var(--gold);fill-opacity:.6;stroke:none}
 .hint{font-size:2.9vmin;letter-spacing:.32em;text-transform:uppercase;color:var(--ink-soft);transition:opacity .3s}
-.journey{position:relative;z-index:5;height:700vh}
+.journey{position:relative;z-index:5;height:700vh}html.iv-tour,html.iv-tour body{background:#0b190e}html.iv-tour .track,html.iv-tour .bg,html.iv-tour .scrim,html.iv-tour .flood{display:none!important}html.iv-tour .journey{background:#0b190e}
 .journey[hidden]{display:none}
 .j-stage{position:sticky;top:0;touch-action:pan-y;height:100vh;height:100svh;overflow:hidden;background:linear-gradient(180deg,#0e1f13 0%,#0b190e 100%)}
 .j-screen{position:absolute;inset:0;z-index:1;overflow:hidden;background:#0d1d10;transform-origin:50% 0;will-change:transform}
@@ -223,7 +223,7 @@ body.tour-full .logo,body.tour-full .gp{opacity:0;pointer-events:none}
 
   var p=0,h=0,f=0,holding=false,done=false,buzzed=0,loop=0,last=0,fx=0,fy=0,shown=false,timer=0;
   function stagger(start,end,i,n,span){var s=start+(i/n)*(end-start-span);return reduced?(p>s?1:0):ease(clamp((p-s)/span))}
-  function paintScroll(){
+  function paintScroll(){if(window.__ivJ)return;
     var max=document.querySelector('.track').offsetHeight-innerHeight;
     p=max>0?clamp(scrollY/max):0;
     c1.forEach(function(s,i){var e=stagger(.04,.64,i,c1.length,.06);s.style.transform='translateY('+((1-e)*110).toFixed(1)+'%)';s.style.opacity=e.toFixed(3)});
@@ -433,11 +433,11 @@ body.tour-full .logo,body.tour-full .gp{opacity:0;pointer-events:none}
     addEventListener('resize',function(){if(!open)return;geom();onScroll();paint()});
     return{
       open:function(){
-        if(open)return;open=true;sec.hidden=false;build();geom();window.scrollTo(0,sec.offsetTop);sc=target=0;full=-1;fz=fzT=0;setCap(0);
+        if(open)return;open=true;window.__ivJ=true;document.documentElement.classList.add('iv-tour');sec.hidden=false;build();geom();window.scrollTo(0,0);sc=target=0;full=-1;fz=fzT=0;setCap(0);
         qwords.forEach(function(w,i){w.style.transitionDelay=(reduced?0:.25+i*.12)+'s'});
         requestAnimationFrame(function(){quote.classList.add('in');paint()});
       },
-      close:function(){open=false;full=-1;fz=fzT=0;if(finIn)closeFinal();fin.hidden=true;sec.hidden=true;quote.classList.remove('in');gp.classList.remove('show');document.body.classList.remove('tour-full')}
+      close:function(){open=false;window.__ivJ=false;document.documentElement.classList.remove('iv-tour');full=-1;fz=fzT=0;if(finIn)closeFinal();fin.hidden=true;sec.hidden=true;quote.classList.remove('in');gp.classList.remove('show');document.body.classList.remove('tour-full')}
     };
   })();
   [document.getElementById('fPlay'),document.getElementById('gp')].forEach(function(a){a.href=PLAY_URL||'#';a.addEventListener('click',function(e){if(!PLAY_URL)e.preventDefault()})});
